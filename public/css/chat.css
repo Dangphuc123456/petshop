@@ -1,0 +1,89 @@
+.chat-container {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    z-index: 1000;
+}
+
+/* Ô chat */
+.chat-widgets {
+    width: 160px;
+    height: 30px;
+    background-color: #fff;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    overflow: hidden;
+}
+.chat-widget {
+    width: auto;
+    height: 30px;
+    background-color: #fff;
+    border-radius: 24px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    /* Sử dụng Flexbox */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    justify-content: center;
+    /* Căn giữa theo chiều ngang */
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    overflow: hidden;
+    /* Ẩn nội dung tràn ra ngoài */
+}
+.chat-widget:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Zalo Chat Widget */
+.zalo-chat {
+    background-color: #067ceb;
+}
+.Facebook-chat {
+    background-color: #080b74;
+}
+.Hotline-chat{
+    background-color: #ff000d;
+}
+.zalo-chat img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.Facebook-chat img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+.Hotline-chat img{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+.chat-link {
+    display: flex;
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Văn bản chat */
+.chat-text {
+    font-size: 12px;
+    margin-right: 28px;
+}
