@@ -24,8 +24,6 @@ class Booking extends Model
         
     ];
 
-    // Bỏ qua các trường thời gian
-    // public $timestamps = false;
     public function rooms()  
     {  
         return $this->belongsTo(Room::class, 'RoomID');  

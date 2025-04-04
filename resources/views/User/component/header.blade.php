@@ -14,7 +14,7 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{ route('User.orders.pending') }}">Đơn Hàng</a>
                         <a class="dropdown-item" href="{{ route('User.orders.completed') }}">Lịch Sử Mua Hàng</a>
-                        <a class="dropdown-item" href="{{ route('User.orders.appointment') }}">Lịch Hẹn</a>
+                        <a class="dropdown-item" href="{{ route('User.orders.appointment') }}">Lịch Hẹn & Đặt Phòng</a>
                         <a class="dropdown-item" href="{{ route('User.orders.servicehistory') }}">Lịch Sử Dịch vụ</a>
                         <a class="dropdown-item" href="{{ route('User.orders.profile') }}">Trang Cá Nhân</a>
                         <a class="dropdown-item" href="{{ route('User.logout') }}">Đăng Xuất</a>

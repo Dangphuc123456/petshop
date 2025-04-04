@@ -409,7 +409,7 @@ hr {
     height: auto;
     margin: auto;
     margin-top: 20px;
-    background: #f9f9f9;
+    background: #e2e1e1;
 }
 
 .btn-detail {
@@ -691,48 +691,76 @@ hr {
 
 /* tin tức */
 .news {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 20px;
-    width: 300px;
+    display: flex;
+    flex-wrap: wrap; /* Tự động xuống dòng khi không đủ chỗ */
+    justify-content: space-between; /* Dàn đều khoảng cách */
+    gap: 20px; /* Khoảng cách giữa các ô */
 }
 
-.date {
-    background-color: #f0f0f0;
-    padding: 10px;
-    text-align: center;
+.news .news-item {
+    width: 32%; /* Chia 3 cột */
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    position: relative; /* Để cố định phần ngày tháng */
+}
+
+.news .news-item:hover {
+    transform: translateY(-5px); /* Hiệu ứng hover nổi lên */
+}
+
+.news .img_SP {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Phần ngày tháng */
+.news .date {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 5px;
     font-weight: bold;
 }
 
-.Main-content {
-    padding: 15px;
+.news .Main-content {
+    margin-top: 15px;
 }
 
-.Main-content h2 {
+.news .Main-content h2 {
     font-size: 18px;
-    margin: 0;
-    color: #333;
+    margin: 10px 0;
 }
 
-.Main-content p {
-    font-size: 14px;
-    color: #666;
+.news .Main-content p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.read-more {
+.news .read-more {
     display: inline-block;
     margin-top: 10px;
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
+    color: #fff;
+    background: #007bff;
+    padding: 8px 12px;
     border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s ease-in-out;
 }
 
-.read-more:hover {
-    background-color: #0056b3;
+.news .read-more:hover {
+    background: #0056b3;
 }
+
 
 /* footer */
 footer {
@@ -839,4 +867,36 @@ footer {
     width: 30px;
     height: 20px;
     color: #040404;
+}
+/* tab */
+.tab {
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.service {
+    text-align: center;
+    flex: 1;
+    margin: 0 10px;
+}
+
+.service img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.service h3 {
+    font-size: 16px;
+    color: #333;
+}
+
+.service p {
+    font-size: 14px;
+    color: #666;
 }

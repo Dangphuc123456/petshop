@@ -4,7 +4,9 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\News;
 use App\Models\Pet;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -20,7 +22,8 @@ class HomeController extends Controller
             ->where('category_name', 'NOT LIKE', 'Mèo%')
             ->get();
         $cart = session()->get('cart', []);
-        return view('User.home', compact('cart', 'dog', 'cats', 'accessories', 'dogCategories', 'catCategories', 'accessoryCategories'));
+        $news = News::all();
+        return view('User.home', compact('news', 'cart', 'dog', 'cats', 'accessories', 'dogCategories', 'catCategories', 'accessoryCategories'));
     }
     public function category($category_id = null)
     {
@@ -171,7 +174,8 @@ class HomeController extends Controller
             ->where('category_name', 'NOT LIKE', 'Mèo%')
             ->get();
         $cart = session()->get('cart', []);
-        return view('User.news', compact('cart', 'dogCategories', 'catCategories', 'accessoryCategories'));
+        $news = News::all();
+        return view('User.news', compact('news', 'cart', 'dogCategories', 'catCategories', 'accessoryCategories'));
     }
 
     public function search(Request $request)
@@ -200,6 +204,33 @@ class HomeController extends Controller
             ->where('category_name', 'NOT LIKE', 'Mèo%')
             ->get();
         $cart = session()->get('cart', []);
-        return view('User.serviceandhotel', compact('cart', 'dogCategories', 'catCategories', 'accessoryCategories'));
+        $services = Service::all();
+        return view('User.serviceandhotel', compact('cart', 'dogCategories', 'catCategories', 'accessoryCategories', 'services'));
+    }
+    public function newdetail($id)
+    {
+        $dogCategories = Category::where('category_name', 'LIKE', 'Chó%')->get();
+        $catCategories = Category::where('category_name', 'LIKE', 'Mèo%')->get();
+        $accessoryCategories = Category::where('category_name', 'NOT LIKE', 'Chó%')
+            ->where('category_name', 'NOT LIKE', 'Mèo%')
+            ->get();
+        $cart = session()->get('cart', []);
+
+        // Tìm tin tức theo ID  
+        $newsDetail = News::find($id);
+
+        // Kiểm tra nếu không tìm thấy tin tức
+        if (!$newsDetail) {
+            return redirect()->route('User.index')->with('error', 'Bản tin không tồn tại.');
+        }
+
+        // Lấy các tin tức khác (ngoại trừ tin đang xem), giới hạn 5 tin mới nhất
+        $relatedNews = News::where('id', '!=', $id)
+            ->orderBy('created_at', 'desc') // Sắp xếp theo thời gian mới nhất
+            ->limit(5)
+            ->get();
+
+        // Trả về view với thông tin tin tức chi tiết và danh sách tin tức liên quan  
+        return view('User.newdetail', compact('newsDetail', 'cart', 'dogCategories', 'catCategories', 'accessoryCategories', 'relatedNews'));
     }
 }

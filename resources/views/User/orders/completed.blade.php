@@ -13,7 +13,6 @@
 
 <body>
     @include('User.component.header')
-    @include('User.component.tab')
     <div class="order-history">
         <h3>📋Lich Sử Đơn Hàng</h3>
         @if($orders->count() > 0)

@@ -160,12 +160,18 @@
     <div class="product-box">
         <h3>📰Tin Tức</h3>
         <div class="news">
-            <div class="date">10 Th12</div>
-            <div class="Main-content">
-                <h2>Mèo dị ứng với cát: Nhận biết và phòng ngừa</h2>
-                <p>Mèo là những sinh vật nhạy cảm và có thể bị dị ứng với nhiều [...</p>
-                <a href="#" class="read-more">Đọc chi tiết</a>
+            @foreach($news as $new)
+            <div class="news-item">
+                <div class="date">{{ \Carbon\Carbon::parse($new->created_at)->format('d/m/Y') }}</div>
+                <img class="img_SP" src="{{ asset('anh/' . $new->image_url) }}" alt="Product image">
+                <div class="date">{{ $new->create_at }}</div>
+                <div class="Main-content">
+                    <h2>{{ $new->title }}</h2>
+                    <p>{{ $new->content }}</p>
+                    <a href="{{ route('User.newdetail', ['id' => $new->id]) }}" class="read-more">Đọc chi tiết</a>
+                </div>
             </div>
+            @endforeach
         </div>
     </div>
 

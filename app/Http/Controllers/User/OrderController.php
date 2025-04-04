@@ -21,7 +21,7 @@ class OrderController extends Controller
 
         // Lấy danh sách đơn hàng chưa hoàn thành kèm theo các sản phẩm trong đơn
         $orders = Order::where('customer_id', $customer->id)
-            ->whereIn('status', ['pending', 'Đã xác nhận', 'Đang giao hàng']) // Trạng thái: hoàn thành, hủy
+            ->whereIn('status', ['Chờ xác nhận', 'Đã xác nhận', 'Đang giao hàng']) // Trạng thái: hoàn thành, hủy
             ->orderBy('order_date', 'desc')
             ->get();
 

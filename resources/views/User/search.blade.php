@@ -14,9 +14,7 @@
 <body>
     @include('User.component.header')
     @include('User.component.slideshow')
-    @include('User.component.tab')
-
-    
+   
     @if(isset($pets) && count($pets) > 0)
     <div class="product-box">
     <h4>🔍 "{{ $query }}"</h4>

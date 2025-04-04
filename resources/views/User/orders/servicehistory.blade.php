@@ -13,7 +13,6 @@
 
 <body>
     @include('User.component.header')
-    @include('User.component.tab')
     <div class="about">
         <h3 class="mb-4 mt-4" style="margin-left: 24px;">📅Lịch sử Đặt Phòng vs Dịch vụ</h3>
         @if(session('error'))

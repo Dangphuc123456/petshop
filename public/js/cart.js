@@ -15,5 +15,20 @@ window.onload = function () {
     }
 }; 
 
+window.addEventListener('DOMContentLoaded', (event) => {
+    // Nếu có thông báo
+    let alert = document.getElementById('success-alert');
 
+    // Kiểm tra xem phần tử có tồn tại không
+    if (alert) {
+        // Sau 5 giây, ẩn thông báo bằng cách thay đổi độ mờ (opacity)
+        setTimeout(() => {
+            alert.style.opacity = 0;
+            // Sau khi opacity chuyển về 0, ẩn hẳn phần tử
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 1000); // Thời gian để opacity mờ dần (1 giây)
+        }, 2000); // Hiển thị trong 5 giây
+    }
+});
 

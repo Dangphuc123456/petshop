@@ -14,7 +14,6 @@
 <body>
     @include('User.component.header')
     @include('User.component.slideshow')
-    @include('User.component.tab')
     <div class="box">
         <!-- Hiển thị danh sách danh mục con -->
         <div class="category-list" style="height:800px">

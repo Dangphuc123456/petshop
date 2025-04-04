@@ -13,7 +13,6 @@
 
 <body>
     @include('User.component.header')
-    @include('User.component.tab')
     <div class="container">
         <h2>Hồ sơ khách hàng</h2>
 

@@ -14,7 +14,6 @@
 <body>
     @include('User.component.header')
     @include('User.component.slideshow')
-    @include('User.component.tab')
     <form action="{{ route('User.checkout.payment') }}" method="POST">
         @csrf
         <div class="row">

@@ -14,9 +14,8 @@
 <body>
     @include('User.component.header')
     @include('User.component.slideshow')
-    @include('User.component.tab')
-    @if(session('success'))
-    <div id="success-message" class="alert alert-success">
+    @if (session('success'))
+    <div class="alert alert-success custom-alert" id="success-alert">
         {{ session('success') }}
     </div>
     @endif

@@ -14,7 +14,6 @@
 <body>
     @include('User.component.header')
     @include('User.component.slideshow')
-    @include('User.component.tab')
     <div class="cart-views">
         <h2 style="color: #ff6600;">Giỏ hàng của bạn</h2>
         @if(session('success'))

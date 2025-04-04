@@ -51,7 +51,7 @@ class CheckoutController extends Controller
         $order->address = $request->address;
         $order->payment = $request->payment;
         $order->total_amount = $request->total_amount;
-        $order->status = 'pending'; // Trạng thái mặc định là pending
+        $order->status = 'Chờ xác nhận'; // Trạng thái mặc định là pending
         $order->save();
 
         // Tạo bản ghi trong bảng `payments`

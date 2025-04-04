@@ -14,7 +14,6 @@
 <body>
     @include('User.component.header')
     @include('User.component.slideshow')
-    @include('User.component.tab')
    
     @include('User.component.scroll')
     @include('User.component.chat')
