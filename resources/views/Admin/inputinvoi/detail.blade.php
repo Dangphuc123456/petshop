@@ -1,25 +1,45 @@
-@extends('Admin.admin')
-@section('title', 'Purchase Order Details')
-@section('main')
-<div class="container my-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-success text-white">
-            <h2 class="text-center mb-0">Purchase Order Details</h2>
-        </div>
-        <div class="card-body">
-            <h4>Order Information</h4>
-            <p><strong>Order Date:</strong> {{ $purchaseOrder->order_date }}</p>
-            <p><strong>Total Amount:</strong> {{ $purchaseOrder->total_amount }}</p>
-            <p><strong>Supplier:</strong> {{ $purchaseOrder->supplier->name }}</p> {{-- Assuming you have a supplier relation set up --}}
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title w-100 text-center">📋 Chi tiết đơn đặt hàng</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
 
-            <h4 class="mt-4">Purchase Order Items</h4>
-            <table class="table table-bordered">
-                <thead>
+<div class="modal-body px-4">
+    {{-- Thông tin đơn hàng --}}
+    <div class="mb-4">
+        <h5 class="fw-bold border-bottom pb-2">🧾 Thông tin đơn hàng</h5>
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <span class="fw-semibold">📅 Ngày đặt hàng:</span><br>
+                {{ $purchaseOrder->order_date }}
+            </div>
+            <div class="col-md-4 mb-2">
+                <span class="fw-semibold">💰 Tổng tiền:</span><br>
+                <span class="text-danger fw-bold">{{ number_format($purchaseOrder->total_amount, 0, ',', '.') }}VNĐ</span>
+            </div>
+            <div class="col-md-4 mb-2">
+                <span class="fw-semibold">🏢 Nhà cung cấp:</span><br>
+                {{ $purchaseOrder->supplier->name }}
+            </div>
+            <div class="col-md-3 mb-2">
+                <span class="fw-semibold">Link:</span><br>
+                <a href="{{ $purchaseOrder->invoice_file }}" target="_blank" rel="noopener noreferrer">
+                    {{ $purchaseOrder->invoice_file }}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {{-- Bảng chi tiết sản phẩm --}}
+    <div>
+        <h5 class="fw-bold border-bottom pb-2 mb-3">📦 Chi tiết sản phẩm đặt</h5>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle text-center">
+                <thead class="table-secondary">
                     <tr>
-                        <th>Pet ID</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
+                        <th>Mã thú cưng</th>
+                        <th>Số lượng</th>
+                        <th>Giá (đ)</th>
+                        <th>Thành tiền (đ)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,14 +47,14 @@
                     <tr>
                         <td>{{ $item->pet_id }}</td>
                         <td>{{ $item->quantity }}</td>
-                        <td>{{ $item->price }}</td>
-                        <td>{{ $item->quantity * $item->price }}</td> {{-- Tính tổng giá trị của từng item --}}
+                        <td class="text-end">{{ number_format($item->price, 0, ',', '.') }}</td>
+                        <td class="text-end text-danger fw-semibold">
+                            {{ number_format($item->quantity * $item->price, 0, ',', '.') }}
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
-            <a href="{{ route('admin.inputinvoi.index') }}" class="btn btn-secondary">Back to Orders</a>
         </div>
     </div>
 </div>
-@endsection

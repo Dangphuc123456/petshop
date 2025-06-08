@@ -21,8 +21,11 @@ class Order extends Model
         'phone',
         'address',
         'email',
+        'postal_code',
         'payment',
         'customer_name',
+        'stock_deducted',
+        'cancel_reason'
     ];
     // Quan hệ với model OrderItem
     public function orderItems()
@@ -33,5 +36,8 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
-    
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class, 'order_id');
+    }
 }

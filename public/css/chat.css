@@ -24,7 +24,7 @@
     overflow: hidden;
 }
 .chat-widget {
-    width: auto;
+    width: 170px;
     height: 30px;
     background-color: #fff;
     border-radius: 24px;

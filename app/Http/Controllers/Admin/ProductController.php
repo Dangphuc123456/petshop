@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Pet;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pets = Pet::all();
-        $pets = Pet::paginate(12);
-        return view('admin.pets.index', compact('pets'));
+        $perPage = $request->input('perPage', 10);
+        $pets = Pet::paginate($perPage)->appends(['perPage' => $perPage]);
+        $category = Category::all();
+        return view('admin.pets.index', compact('pets', 'perPage', 'category'));
     }
     public function create()
     {
@@ -22,7 +24,6 @@ class ProductController extends Controller
     {
         $data = [
             'pet_id' => $request->input('pet_id'),
-            'name' => $request->input('name'),
             'species' => $request->input('species'),
             'breed' => $request->input('breed'),
             'age' => $request->input('age'),
@@ -43,30 +44,35 @@ class ProductController extends Controller
         return redirect()->route('admin.pets.index')->with('success', 'Thêm thành công thú cưng!');
     }
 
-    public function edit(String $pet_id)
-    {
-        $pets = Pet::where('pet_id', $pet_id)->first();
 
-        if (!$pets) {
-            return abort(404); // Trả về trang lỗi 404 nếu không tìm thấy sản phẩm
-        }
-        return view('admin.pets.edit', compact('pets'));
+    public function edit($pet_id, Request $request)
+    {
+        $pet = Pet::findOrFail($pet_id);
+
+        // Lấy giá trị từ query string
+        $page = $request->query('page', 1);
+        $perPage = $request->query('perPage', 10);
+
+        // Truyền vào view
+        return view('admin.pets.edit', compact('pet', 'page', 'perPage'));
+    }
+
+    public function show($pet_id)
+    {
+        $pet = Pet::findOrFail($pet_id);
+        return view('admin.pets.detail', compact('pet'));
     }
     public function update(Request $request, string $pet_id)
     {
         $pets = Pet::find($pet_id);
         if (!$pets) {
-            // Xử lý khi không tìm thấy thú cưng
-            return abort(404); // Trả về trang lỗi 404
+            return abort(404);
         }
-    
+
         $request->validate([
-            // Định nghĩa các quy tắc kiểm tra dữ liệu nếu cần
-            // Ví dụ: 'name' => 'required|max:255',
+            // Validation rules
         ]);
-    
-        // Cập nhật các thuộc tính của thú cưng từ dữ liệu gửi từ form
-        $pets->name = $request->name;
+
         $pets->species = $request->species;
         $pets->breed = $request->breed;
         $pets->age = $request->age;
@@ -76,40 +82,26 @@ class ProductController extends Controller
         $pets->status = $request->status;
         $pets->category_id = $request->category_id;
         $pets->gender = $request->gender;
-        $pets->updated_at = date("Y-m-d H:i:s"); // Cập nhật thời gian sửa đổi
-    
-        // Lưu các thay đổi vào cơ sở dữ liệu
+        $pets->updated_at = now();
+
         $pets->save();
-    
-        // Chuyển hướng về trang danh sách thú cưng với thông báo thành công
-        return redirect()->route('admin.pets.index', ['pet_id' => $pet_id])->with('success', 'Thú cưng đã được cập nhật thành công.');
+
+        // Lấy lại giá trị page và perPage từ form
+        $page = $request->input('page');
+        $perPage = $request->input('perPage');
+
+        return redirect()->route('admin.pets.index', [
+            'page' => $page,
+            'perPage' => $perPage
+        ])->with('success', 'Thú cưng đã được cập nhật thành công.');
     }
-    
-    public function show(string $pet_id)
+
+    public function destroy($pet_id)
     {
-        $pets = Pet::where('pet_id', $pet_id)->first();
+        $pets = Pet::findOrFail($pet_id);
+        $pets->delete();
 
-        if (!$pets) {
-            // Handle the case where no pet is found with the given pet_id
-            return abort(404); // Return a 404 error page
-        }
-
-        // Extract individual attributes
-        $pet_id = $pets->pet_id;
-        $name = $pets->name;
-        $species = $pets->species;
-        $breed = $pets->breed;
-        $age = $pets->age;
-        $price = $pets->price;
-        $description = $pets->description;
-        $image_url = $pets->image_url;
-        $status = $pets->status;
-        $category_id = $pets->category_id;
-        $created_at = $pets->created_at;
-        $updated_at = $pets->updated_at;
-        $gender = $pets->gender;
-
-        // Pass data to the view
-        return view('admin.pets.detail', compact('pets', 'pet_id', 'name', 'species', 'breed', 'age', 'price', 'description', 'image_url', 'status', 'category_id', 'created_at', 'updated_at', 'gender'));
+        return redirect()->route('admin.pets.index')
+            ->with('success', 'Xóa nhà sản phẩm thành công!');
     }
 }

@@ -10,7 +10,6 @@
             <form action="{{ route('admin.inputinvoi.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <!-- Left column: General Information -->
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="order_date" class="form-label">Order Date</label>
@@ -29,17 +28,23 @@
 
                         <div class="mb-3">
                             <label for="total_amount" class="form-label">Total Amount</label>
+                            <input type="number" class="form-control" name="total_amount" id="total_amount" required>
+                        </div>
+
+                        <!-- Thêm ô Link ở đây -->
+                        <div class="mb-3">
+                            <label for="invoice_file" class="form-label">Link</label>
+                            <input type="text" class="form-control" name="invoice_file" id="invoice_file">
                         </div>
                     </div>
 
-                    <!-- Right column: Purchase Order Items -->
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="pet_id" class="form-label">Pet</label>
                             <select class="form-control" name="pet_id" id="pet_id" required>
                                 <option value="" disabled selected>Select Pet</option>
                                 @foreach($pets as $pet)
-                                <option value="{{ $pet->pet_id }}">{{ $pet->pet_id }}</option>
+                                <option value="{{ $pet->pet_id }}">{{ $pet->description }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -55,12 +60,21 @@
                         </div>
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary btn-lg">Add Purchase Order</button>
+                            <button type="submit" class="btn btn-primary btn-lg">Add </button>
                         </div>
                     </div>
                 </div>
+
             </form>
         </div>
     </div>
 </div>
 @endsection
+<script>
+    document.addEventListener('input', function() {
+        const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+        const price = parseFloat(document.getElementById('price').value) || 0;
+        const total = quantity * price;
+        document.getElementById('total_amount').value = total.toFixed(2);
+    });
+</script>

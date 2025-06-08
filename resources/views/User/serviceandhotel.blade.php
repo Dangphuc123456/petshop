@@ -15,27 +15,32 @@
     @include('User.component.header')
     @include('User.component.slideshow')
 
-    <div class="container about">
-        <div class="service">
-            <h2 class="text-center" style="color: orange;">Pet Services</h2>
-            <div class="row services-list">
+    <div class="about">
+        <div class="shadow-lg p-4 rounded w-100">
+           <h3 class="text-warning fw-bold mb-3 text-center" style="font-size: 24px;">Pet Services</h3>
+            <div class="row g-4">
                 <!-- Khách sạn thú cưng -->
-                <div class="col-md-6 service-item mb-4">
-                    <div class="card">
-                        <img src="{{ asset('anh/ks.webp') }}" class="card-img-top" alt="Khách sạn thú cưng" style="height: 300px; width: 100%; object-fit: cover;">
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="{{ asset('anh/ks.webp') }}" class="card-img-top" alt="Khách sạn thú cưng" style="height: 300px; object-fit: cover;">
                         <div class="card-body text-center">
-                            <h2 class="card-title">Khách sạn thú cưng</h2>
-                            <a href="{{ route('User.booking') }}" class="btn btn-primary">View Available Rooms</a>
+                            <h5 class="card-title fw-bold">Khách sạn thú cưng</h5>
+                            <a href="{{ route('User.booking') }}" class="btn btn-primary mt-2">
+                                <i class="fas fa-bed me-2"></i>Xem phòng có sẵn
+                            </a>
                         </div>
                     </div>
                 </div>
+
                 <!-- Dịch vụ spa -->
-                <div class="col-md-6 service-item mb-4">
-                    <div class="card">
-                        <img src="{{ asset('anh/dv.webp') }}" class="card-img-top" alt="Dịch vụ spa" style="height: 300px; width: 100%; object-fit: cover;">
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="{{ asset('anh/dv.webp') }}" class="card-img-top" alt="Dịch vụ spa" style="height: 300px; object-fit: cover;">
                         <div class="card-body text-center">
-                            <h2 class="card-title">Dịch vụ spa</h2>
-                            <a href="{{ route('User.appointment') }}" class="btn btn-secondary">Xem chi tiết</a>
+                            <h5 class="card-title fw-bold">Dịch vụ spa</h5>
+                            <a href="{{ route('User.appointment') }}" class="btn btn-secondary mt-2">
+                                <i class="fas fa-spa me-2"></i>Xem chi tiết
+                            </a>
                         </div>
                     </div>
                 </div>

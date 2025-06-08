@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PetShop</title>
+    <link rel="icon" href="{{ asset('anh/petshop.png') }}">
     <link rel="stylesheet" href="{{ asset('css/loginvsregister.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
@@ -13,19 +14,23 @@
     <div class="container">
         <div class="form-container register-container">
             <h2>Sign Up Form</h2>
-            <form action="#" method="POST">
-                <input type="text" placeholder="Username" required>
-                <input type="email" placeholder="Email" required>
+            <form action="{{ route('User.register.submit') }}" method="POST">
+                @csrf
+                <input type="text" name="username" placeholder="Username" required maxlength="50" value="{{ old('username') }}">
+                <input type="email" name="email" placeholder="Email" required maxlength="100" value="{{ old('email') }}">
+                <input type="text" name="name" placeholder="Full Name" required maxlength="100" value="{{ old('name') }}">
+                <input type="text" name="phone" placeholder="Phone (10-15 digits)" required pattern="\d{10,15}" value="{{ old('phone') }}">
+                <input type="text" name="address" placeholder="Address" required maxlength="255" value="{{ old('address') }}">
 
                 <div class="password-container">
-                    <input type="password" id="password" placeholder="Password" required>
+                    <input type="password" id="password" name="password" placeholder="Password" required minlength="6">
                     <span class="toggle-password">
                         <i class="fas fa-eye" id="togglePassword"></i>
                     </span>
                 </div>
 
                 <div class="password-container">
-                    <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+                    <input type="password" id="confirm-password" name="password_confirmation" placeholder="Confirm Password" required minlength="6">
                     <span class="toggle-password">
                         <i class="fas fa-eye" id="toggleConfirmPassword"></i>
                     </span>
@@ -34,6 +39,7 @@
                 <button type="submit">Sign Up</button>
                 <p>Đã có tài khoản? <a href="{{ route('User.login') }}">Đăng nhập</a></p>
             </form>
+
         </div>
     </div>
 
@@ -56,7 +62,6 @@
         }
     }
 
-    // Gán sự kiện click cho từng trường mật khẩu
     document.getElementById("togglePassword").addEventListener("click", function() {
         togglePasswordVisibility("password", "togglePassword");
     });

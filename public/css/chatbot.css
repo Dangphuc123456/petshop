@@ -1,0 +1,254 @@
+#chatbot-container {
+  position: fixed;
+  bottom: 120px;
+  right: 20px;
+  width: 320px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+  z-index: 9999;
+  transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
+}
+
+#chatbot-toggle {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  background-color: #ff9800;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  animation: shake 1s infinite ease-in-out;
+  animation-delay: 5s;
+  /* Delay giữa các lần rung */
+  animation-iteration-count: infinite;
+}
+
+/* Tạo hiệu ứng lắc */
+@keyframes shake {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  20% {
+    transform: translate(-2px, 2px) rotate(-2deg);
+  }
+
+  40% {
+    transform: translate(2px, -2px) rotate(2deg);
+  }
+
+  60% {
+    transform: translate(-2px, 2px) rotate(-2deg);
+  }
+
+  80% {
+    transform: translate(2px, -2px) rotate(2deg);
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* Container cho chấm nhấp nháy */
+.bot.typing {
+  display: flex;
+  align-items: center;
+  font-style: italic;
+  color: #666;
+  margin: 8px 0;
+}
+
+/* Mỗi chấm */
+.bot.typing .dot {
+  height: 6px;
+  width: 6px;
+  background-color: #666;
+  border-radius: 50%;
+  margin: 0 2px;
+  animation: blink 1s infinite;
+}
+
+/* Delay cho dot 2 và 3 để tạo hiệu ứng lan tỏa */
+.bot.typing .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.bot.typing .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Keyframes để nhấp nháy */
+@keyframes blink {
+
+  0%,
+  80%,
+  100% {
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 1;
+  }
+}
+
+.chatbot-header {
+  background: #f5f5f5;
+  padding: 10px 15px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+#chatbox {
+  height: 300px;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 14px;
+  background-color: #fafafa;
+}
+
+.user,
+.bot {
+  margin: 8px 0;
+}
+
+.user {
+  text-align: right;
+  color: #007BFF;
+}
+
+.bot {
+  text-align: left;
+  color: #28a745;
+}
+
+/* chung cho bot message */
+.bot {
+  display: inline-block;
+  /* để tự co theo nội dung */
+  background-color: #f1f0f0;
+  /* màu nền */
+  color: #333;
+  /* màu chữ */
+  border-radius: 12px;
+  /* bo góc */
+  padding: 8px 12px;
+  /* đệm trong */
+  margin: 8px 0;
+  /* cách trên/dưới */
+  position: relative;
+  /* để vẽ mũi tên */
+  max-width: 80%;
+  /* ko quá rộng */
+  word-wrap: break-word;
+  /* xuống dòng khi quá dài */
+}
+
+/* mũi tên ở bên trái bubble */
+.bot::before {
+  content: '';
+  position: absolute;
+  top: 22px;
+  /* căn dọc */
+  left: -8px;
+  /* lùi qua trái */
+  border-width: 8px 8px 8px 0;
+  border-style: solid;
+  border-color: transparent #f1f0f0 transparent transparent;
+}
+
+.user {
+  display: inline-block;
+  background-color: #0084ff;
+  color: #fff;
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin: 8px 0;
+  position: relative;
+  float: right;
+  clear: both;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.user::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  right: -8px;
+  border-width: 8px 0 8px 8px;
+  border-style: solid;
+  border-color: transparent transparent transparent #0084ff;
+}
+
+#chatbot-close {
+  cursor: pointer;
+  color: #999;
+  font-size: 18px;
+}
+
+#chatbot-close:hover {
+  color: red;
+}
+
+.chatbot-input {
+  display: flex;
+  border-top: 1px solid #ddd;
+  padding: 8px;
+  background: #fff;
+}
+
+#message {
+  flex: 1;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#send-btn {
+  margin-left: 8px;
+  background-color: #4285f4;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#send-btn:hover {
+  background-color: #357ae8;
+}
+
+.fa-paper-plane {
+   transform: rotate(-330deg); /* Đảm bảo không bị xoay */
+    display: inline-block;   /* Giữ nó nằm ngang */
+    vertical-align: middle;  /* Căn giữa với nội dung xung quanh nếu có */
+    margin-bottom: 5px;
+}
+
+
+.suggestion-btn {
+    margin: 3px;
+    padding: 6px 12px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+.suggestion-btn:hover {
+    background-color: #ddd;
+}

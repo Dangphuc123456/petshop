@@ -30,5 +30,10 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
+    'openai' => [
+        'api_key' => env('CHATBOT_API_KEY'),
+        'default_model' => 'gpt-4o-mini',
+        'base_url' => 'https://api.openai.com/v1/',
+        'timeout' => 30,
+    ],
 ];

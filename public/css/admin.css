@@ -1,0 +1,54 @@
+thead th {
+    background-color: #007bff !important;
+    color: white !important;
+}
+
+.order-cell {
+    text-align: center;
+}
+
+.uniform-width {
+    margin-bottom: 10px;
+    width: 150px;
+    max-width: 150px;
+    display: inline-block;
+}
+
+.uniform {
+    display: block;
+    text-align: center;
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+.toast-success {
+    background-color: #2e8b57 !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+/* Thu nhỏ mũi tên và phân trang */
+.pagination-wrapper .pagination li a,
+.pagination-wrapper .pagination li span {
+    padding: 4px 10px;
+    font-size: 14px;
+    line-height: 1;
+}
+
+/* Thu nhỏ icon mũi tên */
+.pagination-wrapper .pagination li a svg,
+.pagination-wrapper .pagination li span svg {
+    width: 14px;
+    height: 14px;
+}
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+

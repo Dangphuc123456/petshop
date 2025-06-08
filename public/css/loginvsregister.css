@@ -59,12 +59,12 @@ input {
     color: #333;
 }
 
-.options {
+/* .options {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
     margin: 10px 0;
-}
+} */
 
 button {
     width: 100%;

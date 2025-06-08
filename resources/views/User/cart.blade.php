@@ -5,23 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PetShop</title>
+    <link rel="icon" href="{{ asset('anh/petshop.png') }}">
     <link rel="stylesheet" href="{{ asset('css/cart.css') }}">
     <link rel="stylesheet" href="{{ asset('css/chat.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 </head>
 
 <body>
     @include('User.component.header')
     @include('User.component.slideshow')
-    <div class="cart-views">
+    <div class="cart-views" id="product-list">
         <h2 style="color: #ff6600;">Giỏ hàng của bạn</h2>
-        @if(session('success'))
-        <div id="success-message" class="alert alert-success">{{ session('success') }}</div>
-        @endif
         @if(!empty($cart) && count($cart) > 0)
         <div class="cart-content">
-            <table class="cart-table">
+            <table class="cart-table" style="border: none !important;outline: none;">
                 <thead>
                     <tr>
                         <th></th>
@@ -38,14 +37,14 @@
                             <form action="{{ route('removeFromCart', $pet_id) }}" method="POST" onsubmit="return confirmDelete()">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Xóa</button>
+                                <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                             </form>
                         </td>
                         <td class="product-info">
                             <img src="{{ asset('anh/' . $item['image']) }}" class="product-image">
                             <span>{{ $item['name'] }}</span>
                         </td>
-                        <td>{{ number_format($item['price'], 0, ',', '.') }} đ</td>
+                        <td>{{ number_format($item['price'], 0, ',', '.') }} VNĐ</td>
                         <td>
                             <div class="quantity-control">
                                 <button type="button" class="decrease" onclick="updateQuantity(this, -1)">-</button>
@@ -54,30 +53,35 @@
                                 <button type="button" class="increase" onclick="updateQuantity(this, 1)">+</button>
                             </div>
                         </td>
-                        <td>{{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }} đ</td>
+                        <td>{{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }} VNĐ</td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
 
             <div class="cart-summary">
+                <h3 style="margin-bottom: 10px;">Tổng giỏ hàng</h3>
+                <hr>
                 <table>
                     <tr>
-                        <td>Tạm tính</td>
-                        <td>{{ number_format($total, 0, ',', '.') }} đ</td>
+                        <td>Tổng cộng</td>
+                        <td>{{ number_format($total, 0, ',', '.') }} VNĐ</td>
+                    </tr>
+                    <tr>
+                        <td>Phí vận chuyển</td>
+                        <td>0 đ</td>
                     </tr>
                     <tr>
                         <td><strong>Tổng</strong></td>
-                        <td><strong>{{ number_format($total, 0, ',', '.') }} đ</strong></td>
+                        <td><strong>{{ number_format($total, 0, ',', '.') }} VNĐ</strong></td>
                     </tr>
                 </table>
-                <a href="{{ route('User.checkout') }}" ><button class="checkout-btn">TIẾN HÀNH THANH TOÁN</button></a> 
-
-                <div class="discount-section">
+               <a href="{{ route('User.checkout.index') }}"><button class="checkout-btn">TIẾN HÀNH THANH TOÁN</button></a>
+                <!-- <div class="discount-section">
                     <label for="discount-code">Mã ưu đãi</label>
-                    <input type="text" id="discount-code" placeholder="Mã ưu đãi">
+                    <input type="text" id="discount-code" placeholder="Mã ưu đãi" style="margin-bottom: 5px;">
                     <button class="apply-btn">Áp dụng</button>
-                </div>
+                </div> -->
             </div>
         </div>
         @else
@@ -92,10 +96,12 @@
     @include('User.component.scroll')
     @include('User.component.chat')
     @include('User.component.footer')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/slideshow.js') }}"></script>
     <script src="{{ asset('js/cart.js') }}"> </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('js/loading.js') }}"></script>
     <script>
         $(document).ready(function() {
             // Xử lý tăng/giảm số lượng ngay lập tức
@@ -163,5 +169,25 @@
             }
         });
     </script>
+    @if(session('success'))
+    <script>
+        toastr.success("{{ session('success') }}", "Thành công", {
+            closeButton: true,
+            progressBar: true,
+            timeOut: 3000,
+        });
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        toastr.error("{{ session('error') }}", "Lỗi", {
+            closeButton: true,
+            progressBar: true,
+            timeOut: 3000,
+        });
+    </script>
+    @endif
 </body>
+
 </html>

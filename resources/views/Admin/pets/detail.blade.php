@@ -1,63 +1,83 @@
-@extends('Admin.admin')
-@section('title', 'Detail Pet')
-@section('main')
-<div class="container my-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h2 class="text-center mb-0">Detail Pet Information {{$pet_id }}</h2>
-        </div>
-        <div class="card-body">
-            <form action="#" method="#">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Pet Name :<span> {{ $pets->name }}</span></label>
-                </div>
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title"> 📋Chi tiết sản phẩm</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
 
-                <div class="mb-3">
-                    <label for="species" class="form-label">Species :<span>{{ $pets->species }}</span></label>
-                </div>
-
-                <div class="mb-3">
-                    <label for="breed" class="form-label">Breed :<span> {{ $pets->breed }}</span></label>
-                </div>
-
-                <div class="mb-3">
-                    <label for="age" class="form-label">Age :<span>{{ $pets->age }}</span></label>
-                </div>
-
-                <div class="mb-3">
-                    <label for="price" class="form-label">Price :<span>{{ number_format($pets->price, 0, ',', '.') }}đ</span></label>
-                </div>
-
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description :<span>{{ $pets->description }}</span></label>
-                </div>
-
-                <div class="mb-3">
-                    <label for="image_url" class="form-label">Image:</label>
-                    <div>
-                        <a href="{{ asset('anh/' . $pets->image_url) }}" target="_blank">
-                            <img src="{{ asset('anh/' . $pets->image_url) }}"
-                                alt="Pet Image"
-                                class="img-thumbnail"
-                                style="max-width: 200px; max-height: 200px;">
-                        </a>
+<div class="modal-body">
+    <div class="row justify-content-center">
+        <!-- Cột trái -->
+        <div class="row">
+            <!-- Bên trái: Thông tin -->
+            <div class="col-md-8">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <span class="fw-bold me-1">Loại:</span> <span>{{ $pet->species }}</span>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="fw-bold me-1">Giống:</span> <span>{{ $pet->breed }}</span>
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="status" class="form-label">Status :<span>{{ $pets->status }}</span></label>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <span class="fw-bold me-1">Tuổi:</span> <span>{{ $pet->age }}</span>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="fw-bold me-1">Giá:</span> <span class="text-danger fw-bold">{{ number_format($pet->price, 0, ',', '.') }} VNĐ</span>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="category_id" class="form-label">Category ID :<span>{{ $pets->category_id }}</span></label>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <span class="fw-bold me-1">Kho:</span> <span>{{ $pet->quantity_in_stock }}</span>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="fw-bold me-1">Đã bán:</span> <span>{{ $pet->quantity_sold }}</span>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="gender" class="form-label">Gender :<span>{{ $pets->gender }}</span></label>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <span class="fw-bold me-1">Danh mục:</span> <span>{{ $pet->category_id }}</span>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="fw-bold me-1">Trạng thái:</span>
+                        <span>
+                            @if($pet->status == 'on') Có sẵn
+                            @elseif($pet->status == 'unavailable') Không có sẵn
+                            @else Đang chờ
+                            @endif
+                        </span>
+                    </div>
                 </div>
-                <a href="{{ route('admin.pets.index') }}" class="btn btn-secondary">Back to Pets</a>
-            </form>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <span class="fw-bold me-1">Giới tính:</span>
+                        <span>
+                            @if($pet->gender == 'male') Đực
+                            @elseif($pet->gender == 'female') Cái
+                            @else Không xác định
+                            @endif
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <span class="fw-bold me-1">Mô tả:</span>
+                        <p class="mb-0">{{ $pet->description }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bên phải: Ảnh -->
+            <div class="col-md-4 text-center">
+                <label class="form-label fw-bold">Ảnh sản phẩm</label>
+                <div class="border rounded p-2 bg-light">
+                    <img style="width: 100%; max-width: 250px; height: auto;" class="img-thumbnail" src="{{ asset('anh/' . $pet->image_url) }}" alt="Product image">
+                </div>
+            </div>
         </div>
     </div>
 </div>
-@endsection

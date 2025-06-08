@@ -38,7 +38,7 @@ class CategoryController extends Controller
         $category = Category::where('category_id', $category_id)->first();
 
         if (!$category) {
-            return abort(404); // Trả về trang lỗi 404 nếu không tìm thấy sản phẩm
+            return abort(404); 
         }
         return view('admin.category.edit', compact('category'));
     }
@@ -69,19 +69,15 @@ class CategoryController extends Controller
     
     public function show(string $category_id)
     {
-        $category = Category::where('category_id', $category_id)->first();
-
-        if (!$category) {
-            // Handle the case where no pet is found with the given pet_id
-            return abort(404); // Return a 404 error page
-        }
-
-        // Extract individual attributes
-        $category_id = $category->category_id;
-        $category_name = $category->category_name;
-        $created_at = $category->created_at;
-        $updated_at = $category->updated_at;
+         $category = Category::findOrFail($category_id);
         // Pass data to the view
-        return view('admin.category.detail', compact('category', 'category_id', 'category_name',  'created_at', 'updated_at',));
+        return view('admin.category.detail', compact('category'));
+    }
+    public function destroy($category_id)
+    {
+        $category = Category::findOrFail($category_id);
+        $category->delete();
+
+        return redirect()->route('admin.category.index')->with('success', 'Xóa danh mục thành công!');
     }
 }

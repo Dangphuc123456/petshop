@@ -14,6 +14,7 @@ class PurchaseOrder extends Model
         'purchase_order_id',
         'supplier_id',
         'order_date',
+        'invoice_file',
         'total_amount',
         'updated_at',
         'created_at',
@@ -29,4 +30,7 @@ class PurchaseOrder extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
+    protected $casts = [
+        'order_date' => 'datetime',
+    ];
 }

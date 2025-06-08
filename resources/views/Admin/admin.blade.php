@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="{{ asset('anh/pet.jpg') }}">
-    <link rel="stylesheet" href="{{ asset('css/Admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 
     <title>ADMIN-PET-SHOP</title>
 
@@ -17,15 +17,23 @@
     <link href="startbootstrap-sb-admin-2-4.1.4/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    <!-- Custom styles for this template-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <link href="startbootstrap-sb-admin-2-4.1.4/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0; }
-            100% { opacity: 1; }
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
 
         .blinking-text {
@@ -64,6 +72,30 @@
     <script src="startbootstrap-sb-admin-2-4.1.4/vendor/chart.js/Chart.min.js"></script>
     <script src="startbootstrap-sb-admin-2-4.1.4/js/demo/chart-area-demo.js"></script>
     <script src="startbootstrap-sb-admin-2-4.1.4/js/demo/chart-pie-demo.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @if(session('success'))
+    <script>
+        toastr.success("{{ session('success') }}", "Thành công", {
+            closeButton: true,
+            progressBar: true,
+            timeOut: 3000,
+            positionClass: "toast-top-right" 
+        });
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        toastr.error("{{ session('error') }}", "Lỗi", {
+            closeButton: true,
+            progressBar: true,
+            timeOut: 3000,
+            positionClass: "toast-top-right" 
+        });
+    </script>
+    @endif
+
 </body>
 
 </html>

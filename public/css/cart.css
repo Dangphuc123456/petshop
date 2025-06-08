@@ -33,16 +33,19 @@ body {
 }
 
 .navbar-nav .nav-item {
-    margin-right: 15px;
+    margin-right: 12px;
 }
 
 .navbar-nav .nav-link {
     font-weight: bold;
     color: #ff5e00 !important;
-    font-size: 15px;
+    font-size: 13px;
     /* Kích thước mặc định */
 }
-
+.dropdown-item
+{
+    font-size: 13px;
+}
 /* Dropdown menu */
 .dropdown-menu {
     background-color: white;
@@ -637,7 +640,6 @@ hr {
 .cart-table th,
 .cart-table td {
     border: 1px solid #ddd;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 10px;
     text-align: center;
 }
@@ -806,84 +808,94 @@ hr {
 footer {
     background-color: #ff5e00;
     color: white;
-    padding: 20px;
-}
-
-.footer-content {
+    padding: 30px 10px;    
+  }
+  
+  .footer-content {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;       
     justify-content: space-between;
-    max-width: 1300px;
-    margin: auto;
-}
-
-.section {
-    flex: 1;
-    margin: 10px;
-}
-
-.section h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-.section p,
-.section li {
-    font-size: 1em;
-    line-height: 1.5;
-}
-
-.discount-button {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-}
-
-.social-icons {
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 20px;            
+  }
+  
+  .section {
+    flex: 1 1 220px;      
+    padding: 0;           
+  }
+  
+  .section h2 {
+    font-size: 1.3em;
+    margin: 0 0 10px;
+  }
+  
+  .section p,
+  .section li {
+    font-size: 0.95em;
+    line-height: 1.4;
+    margin: 0 0 8px;
+  }
+  
+  .section ul {
+    padding: 0;
+    margin: 0 0 10px;
+    list-style: disc inside;
+  }
+  
+  .social-icons {
     display: flex;
-    gap: 10px;
-    margin-top: 10px;
-    margin-left: 20px;
-}
-
-.social-link {
-    text-decoration: none;
-    font-size: 24px;
-    color: #1877f2;
-    /* Màu Facebook */
-    transition: 0.3s;
-}
-
-.social-link i {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    gap: 8px;
+    margin: 10px 0;
+  }
+  
+  .social-link i,
+  .social-link img {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
     border-radius: 50%;
-    background: #f0f0f0;
-    padding: 10px;
-}
-
-.social-link i:hover {
-    background: #ddd;
-}
-
-.social-link img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
-
-.map img {
+    background: #fff;
+    color: #ff5e00;
+  }
+  
+  .social-link i:hover,
+  .social-link img:hover {
+    background: #eee;
+  }
+  
+  .map iframe,
+  .section iframe {
     width: 100%;
-    /* adjusted size to fit container */
     height: auto;
-    max-width: 300px;
-    /* limit max width for the map */
-}
+    min-height: 180px;
+    border-radius: 6px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 900px) {
+    .footer-content {
+      gap: 15px;
+    }
+    .section {
+      flex: 1 1 45%;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .footer-content {
+      flex-direction: column;
+      gap: 20px;
+    }
+    .section {
+      flex: 1 1 100%;
+    }
+    .map iframe,
+    .section iframe {
+      min-height: 200px;
+    }
+  }
+  
 
 /* cuộn trang  */
 #scroll-to-top-btn {
@@ -907,4 +919,10 @@ footer {
     width: 30px;
     height: 20px;
     color: #040404;
+}
+.toast-success {
+    background-color: #2e8b57 !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }

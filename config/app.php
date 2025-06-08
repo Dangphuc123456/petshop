@@ -194,7 +194,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        OpenAI\Laravel\ServiceProvider::class,
     ],
 
     /*
@@ -209,7 +209,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
+        // alias khác
+        'OpenAI' => OpenAI\Laravel\Facades\OpenAI::class,
     ])->toArray(),
 
 ];

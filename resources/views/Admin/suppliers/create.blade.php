@@ -9,12 +9,6 @@
         <div class="card-body">
             <form action="{{ route('admin.suppliers.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-
-                <div class="mb-3">
-                    <label for="supplier_id" class="form-label">Supplier ID</label>
-                    <input type="text" class="form-control" name="supplier_id" id="supplier_id" required>
-                </div>
-
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" name="name" id="name" required>
@@ -37,7 +31,7 @@
 
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="number" class="form-control" name="email" id="email" required>
+                    <input type="text" class="form-control" name="email" id="email" required>
                 </div>
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary btn-lg">Add Supplier</button>

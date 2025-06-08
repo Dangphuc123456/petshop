@@ -81,3 +81,12 @@ document.addEventListener("DOMContentLoaded", function () {
   increaseBtn.addEventListener("click", increaseQuantity);
 });
 
+// Hiện loader khi trang tải
+window.addEventListener('load', () => {
+    document.getElementById('loader').style.display = 'none';
+});
+
+// Ví dụ khi nhấn nút hoặc gửi form, muốn hiển thị loader
+function showLoader() {
+    document.getElementById('loader').style.display = 'flex';
+}

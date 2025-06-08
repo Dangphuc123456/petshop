@@ -27,7 +27,7 @@ class RegisterController extends Controller
        ]);
 
        if ($validator->fails()) {
-           return redirect()->route('User.usersregister')
+           return redirect()->route('User.register')
                ->withErrors($validator)
                ->withInput();
        }
@@ -42,6 +42,6 @@ class RegisterController extends Controller
        $customer->address = $request->address;
        $customer->save();
 
-       return redirect()->route('User.userslogin')->with('success', 'Đăng ký thành công! Hãy đăng nhập.');
+       return redirect()->route('User.login')->with('success', 'Đăng ký thành công! Hãy đăng nhập.');
    }
 }

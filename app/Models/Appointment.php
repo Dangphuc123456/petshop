@@ -20,5 +20,6 @@ class Appointment extends Model
         'created_at',
         'updated_at',
         'LocationName',
+        'CancellationReason',
     ];
 }

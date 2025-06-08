@@ -9,12 +9,6 @@
         <div class="card-body">
             <form action="{{ route('admin.pets.store') }}" method="POST">
                 @csrf
-
-                <div class="mb-3">
-                    <label for="pet_id" class="form-label">Pet ID</label>
-                    <input type="text" class="form-control" name="pet_id" id="pet_id" required>
-                </div>
-
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" name="name" id="name" required>

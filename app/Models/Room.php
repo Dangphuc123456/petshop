@@ -14,6 +14,7 @@ class Room extends Model
     protected $fillable = [
             'PricePerNight' ,    
             'Status' , 
+            'Region',
             'created_at' ,
             'updated_at',
     ];

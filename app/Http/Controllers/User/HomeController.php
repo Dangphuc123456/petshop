@@ -25,16 +25,14 @@ class HomeController extends Controller
         $news = News::all();
         return view('User.home', compact('news', 'cart', 'dog', 'cats', 'accessories', 'dogCategories', 'catCategories', 'accessoryCategories'));
     }
-    public function category($category_id = null)
+    public function category($category_id, $category_name)
     {
-        // Lấy tất cả danh mục chó, mèo, phụ kiện
         $dogCategories = Category::where('category_name', 'LIKE', 'Chó%')->get();
         $catCategories = Category::where('category_name', 'LIKE', 'Mèo%')->get();
         $accessoryCategories = Category::where('category_name', 'NOT LIKE', 'Chó%')
             ->where('category_name', 'NOT LIKE', 'Mèo%')
             ->get();
 
-        // Khởi tạo danh sách sản phẩm
         $dog = collect();
         $cats = collect();
         $accessories = collect();
@@ -43,7 +41,6 @@ class HomeController extends Controller
         if ($category_id) {
             $selectedCategory = Category::find($category_id);
             if ($selectedCategory) {
-                // Lấy danh sách danh mục cùng loại (cùng nhóm "Chó", "Mèo" hoặc "Phụ kiện")
                 if (str_starts_with($selectedCategory->category_name, 'Chó')) {
                     $dog = Pet::where('category_id', $category_id)->get();
                     $relatedCategories = Category::where('category_name', 'LIKE', 'Chó%')->get();
@@ -59,8 +56,9 @@ class HomeController extends Controller
             }
         }
         $cart = session()->get('cart', []);
-        return view('User.category', compact('cart', 'dogCategories', 'catCategories', 'accessoryCategories', 'dog', 'cats', 'accessories', 'relatedCategories'));
+        return view('User.category', compact('cart', 'dogCategories', 'catCategories', 'accessoryCategories', 'dog', 'cats', 'accessories', 'relatedCategories', 'category_name'));
     }
+
 
     public function getProductsByCategory($type, $category_id = null)
     {
@@ -102,10 +100,11 @@ class HomeController extends Controller
         // Trả về view với dữ liệu
         return view('User.product', compact('cart', 'products', 'title', 'dogCategories', 'catCategories', 'accessoryCategories', 'relatedCategories', 'type'));
     }
-    public function productdetails($pet_id, $category_id = null)
+    public function productdetails($pet_id, $description = null, $category_id = null)
     {
         // lấy thông tin sản phẩm và sản phẩm tương tự
         $products = Pet::find($pet_id);
+        $description = $description ?? $products->description;
         $similarProducts = Pet::where('category_id', $products->category_id)
             ->where('pet_id', '!=', $pet_id)
             ->limit(8)
@@ -143,7 +142,7 @@ class HomeController extends Controller
             }
         }
         $cart = session()->get('cart', []);
-        return view('User.productdetails', compact('cart', 'dogCategories', 'catCategories', 'accessoryCategories', 'dog', 'cats', 'accessories', 'relatedCategories', 'similarProducts', 'products', 'category'));
+        return view('User.productdetails', compact('description', 'cart', 'dogCategories', 'catCategories', 'accessoryCategories', 'dog', 'cats', 'accessories', 'relatedCategories', 'similarProducts', 'products', 'category'));
     }
 
     public function about()
@@ -180,21 +179,52 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->input('query');
+        $query = trim($request->input('query'));
+        $categoryFilter = $request->input('category');
 
-        // Tìm kiếm theo tên, mô tả, giống loài
-        $pets = Pet::where('name', 'LIKE', "%$query%")
-            ->orWhere('description', 'LIKE', "%$query%")
-            ->orWhere('breed', 'LIKE', "%$query%")
-            ->get();
+        $petsQuery = Pet::query();
+
+        if ($query !== '') {
+            $petsQuery->where(function ($q) use ($query) {
+                // 1) Always search the text fields
+                $q->where('description', 'LIKE', "%{$query}%")
+                    ->orWhere('species', 'LIKE', "%{$query}%")
+                    ->orWhere('breed', 'LIKE', "%{$query}%");
+
+                // 2) Only if the query is numeric, search by price
+                //    We remove commas and dots so "1,500.00" → "150000" → numeric.
+                $numeric = str_replace([',', '.'], '', $query);
+                if (is_numeric($numeric)) {
+                    $price = (float) $numeric;
+                    $q->orWhereBetween('price', [max($price - 100000, 0), $price + 100000]);
+                }
+            });
+        }
+
+        if ($categoryFilter) {
+            $petsQuery->whereHas('category', function ($q) use ($categoryFilter) {
+                $q->where('category_name', 'LIKE', "%{$categoryFilter}%");
+            });
+        }
+
+        $pets = $petsQuery->get();
         $dogCategories = Category::where('category_name', 'LIKE', 'Chó%')->get();
         $catCategories = Category::where('category_name', 'LIKE', 'Mèo%')->get();
         $accessoryCategories = Category::where('category_name', 'NOT LIKE', 'Chó%')
             ->where('category_name', 'NOT LIKE', 'Mèo%')
             ->get();
         $cart = session()->get('cart', []);
-        return view('User.search', compact('cart', 'pets', 'query', 'dogCategories', 'catCategories', 'accessoryCategories'));
+
+        return view('User.search', compact(
+            'cart',
+            'pets',
+            'query',
+            'dogCategories',
+            'catCategories',
+            'accessoryCategories'
+        ));
     }
+
 
     public function serviceandhotel()
     {

@@ -33,16 +33,19 @@ body {
 }
 
 .navbar-nav .nav-item {
-    margin-right: 15px;
+    margin-right: 12px;
 }
 
 .navbar-nav .nav-link {
     font-weight: bold;
     color: #ff5e00 !important;
-    font-size: 15px;
+    font-size: 13px;
     /* Kích thước mặc định */
 }
-
+.dropdown-item
+{
+    font-size: 13px;
+}
 /* Dropdown menu */
 .dropdown-menu {
     background-color: white;
@@ -468,3 +471,10 @@ footer {
     height: 20px;
     color: #040404;
 }
+.toast-success {
+    background-color: #2e8b57 !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+

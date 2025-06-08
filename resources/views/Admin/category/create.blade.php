@@ -9,15 +9,9 @@
         <div class="card-body">
             <form action="{{ route('admin.category.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-
                 <div class="mb-3">
-                    <label for="pet_id" class="form-label">Pet ID</label>
-                    <input type="text" class="form-control" name="pet_id" id="pet_id" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" name="name" id="name" required>
+                    <label for="category_name" class="form-label">category_name</label>
+                    <input type="text" class="form-control" name="category_name" id="category_name" required>
                 </div>
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary btn-lg">Add Categoris</button>

@@ -12,11 +12,11 @@ class Service extends Model
     protected $primaryKey = 'ServiceID';    // khóa chính
     protected $fillable = [
         'ServiceName',
-        'Description' ,
-        'Price' ,
+        'Description',
+        'Price',
         'ServiceDuration',
-        'CreatedAt' ,
+        'created_at',
         'AvailableSlots',
-        ' updated_at',
+        'updated_at',
     ];
 }

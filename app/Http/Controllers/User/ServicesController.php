@@ -70,12 +70,20 @@ class ServicesController extends Controller
         $accessoryCategories = Category::where('category_name', 'NOT LIKE', 'Chó%')
             ->where('category_name', 'NOT LIKE', 'Mèo%')
             ->get();
-        $rooms = Room::where('Status', 'Available')->get();
+        $roomsNorth = Room::where('Status', 'Available')->where('Region', 'Bắc')->get();
+        $roomsSouth = Room::where('Status', 'Available')->where('Region', 'Nam')->get();
+
+        $occupiedNorth = Room::where('Status', 'Occupied')->where('Region', 'Bắc')->get();
+        $occupiedSouth = Room::where('Status', 'Occupied')->where('Region', 'Nam')->get();
+
+        $maintenanceNorth = Room::where('Status', 'Maintenance')->where('Region', 'Bắc')->get();
+        $maintenanceSouth = Room::where('Status', 'Maintenance')->where('Region', 'Nam')->get();
+
         $bookings = Booking::join('Room', 'Booking.RoomID', '=', 'Room.RoomID')
             ->select('Booking.*', 'Room.PricePerNight', 'Room.Status as RoomStatus')
             ->get();
 
-        return view('User.booking', compact('bookings', 'rooms', 'dogCategories', 'catCategories', 'accessoryCategories'));
+        return view('User.booking', compact('maintenanceNorth','maintenanceSouth','bookings', 'occupiedNorth', 'occupiedSouth', 'dogCategories', 'catCategories', 'accessoryCategories', 'roomsNorth', 'roomsSouth',));
     }
     public function bookingstore(Request $request)
     {
@@ -86,6 +94,7 @@ class ServicesController extends Controller
             'Email' => 'nullable|email|max:100',
             'CheckInDate' => 'required|date',
             'CheckOutDate' => 'required|date|after:CheckInDate',
+            'LocationName' => 'required|string|max:255',
         ]);
 
         // Lấy thông tin phòng
@@ -122,14 +131,15 @@ class ServicesController extends Controller
         $booking->CheckInDate = $request->CheckInDate;
         $booking->CheckOutDate = $request->CheckOutDate;
         $booking->TotalPrice = $totalPrice;
-        $booking->BookingStatus = 'Chờ xác nhận'; // Mặc định
+        $booking->BookingStatus = 'Chờ xác nhận';
+        $booking->LocationName = $request->LocationName;
         $booking->save();
 
         // Cập nhật trạng thái phòng thành 'Occupied'
         $room->Status = 'Occupied';
         $room->save();
 
-        return redirect()->route('User.booking')->with('message', 'Đặt phòng thành công! Chờ xác nhận.');
+        return redirect()->route('User.booking')->with('success', 'Đặt phòng thành công! Chờ xác nhận.');
     }
 
     public function appointment()
@@ -174,13 +184,13 @@ class ServicesController extends Controller
 
         // Lấy danh sách lịch hẹn đã hoàn thành
         $appointment = Appointment::where('CustomerName', $customer->name)
-            ->whereIn('Status', ['Hoàn thành', 'Hủy'])
+            ->whereIn('Status', ['Hoàn thành', 'Đã hủy'])
             ->orderBy('AppointmentDate', 'desc')
             ->get();
 
         // Lấy danh sách phòng đã hoàn thành và trả phòng
         $completedBookings = Booking::where('CustomerName', $customer->name)
-            ->whereIn('BookingStatus', ['Confirmed', 'Cancelled'])
+            ->whereIn('BookingStatus', ['Đã hủy', 'Đã trả phòng'])
             ->get();
 
         // Lấy danh mục sản phẩm
@@ -191,5 +201,85 @@ class ServicesController extends Controller
             ->get();
 
         return view('User.orders.servicehistory', compact('appointment', 'completedBookings', 'dogCategories',   'catCategories',   'accessoryCategories'));
+    }
+    public function cancel(Request $request, $appointment_id)
+    {
+        // 1. Kiểm tra đăng nhập
+        if (!Auth::guard('customer')->check()) {
+            return redirect()->route('User.login')->with('error', 'Vui lòng đăng nhập để hủy lịch hẹn.');
+        }
+
+        $customer = Auth::guard('customer')->user();
+
+        // 2. Tìm lịch hẹn của khách hàng dựa vào AppointmentID và CustomerName
+        $appointment = Appointment::where('AppointmentID', $appointment_id)
+            ->where('CustomerName', $customer->name) // tìm theo tên khách hàng
+            ->firstOrFail();
+
+        // 3. Kiểm tra trạng thái được phép hủy
+        if (!in_array($appointment->Status, ['Chờ xác nhận', 'Đã xác nhận'])) {
+            return redirect()
+                ->route('User.orders.appointment')->with('error', 'Chỉ có thể hủy lịch hẹn ở trạng thái Chờ xác nhận hoặc Đã xác nhận.');
+        }
+
+        // 4. Validate input
+        $request->validate([
+            'CancellationReason' => 'required|string|max:255',
+            'other_reason'       => 'nullable|string|max:255',
+        ]);
+
+        // 5. Lấy lý do hủy
+        $reason = $request->CancellationReason === 'Khác'
+            ? $request->other_reason
+            : $request->CancellationReason;
+
+        $appointment->Status = 'Đã hủy';
+        $appointment->CancellationReason = $reason;
+        $appointment->save();
+
+        return redirect()->route('User.orders.appointment')->with('success', 'Lịch hẹn đã được hủy. Lý do: ' . $reason);
+    }
+     public function cancelBooking(Request $request, $booking_id)
+    {
+        // 1. Kiểm tra đăng nhập
+        if (!Auth::guard('customer')->check()) {
+            return redirect()->route('User.login')->with('error', 'Vui lòng đăng nhập để hủy đặt phòng.');
+        }
+
+        $customer = Auth::guard('customer')->user();
+
+        // 2. Tìm booking theo ID và đúng khách hàng (theo Email)
+        $booking = Booking::where('BookingID', $booking_id)
+            ->where('CustomerName', $customer->name)
+            ->firstOrFail();
+
+        if (!in_array($booking->BookingStatus, ['Chờ xác nhận', 'Đã xác nhận'])) {
+            return redirect()
+                ->route('User.orders.booking')
+                ->with('error', 'Chỉ có thể hủy đặt phòng khi ở trạng thái Chờ xác nhận hoặc Đã xác nhận.');
+        }
+
+        $request->validate([
+            'CancellationReason' => 'required|string|max:255',
+            'other_reason'       => 'nullable|string|max:255',
+        ]);
+
+        $reason = $request->CancellationReason === 'Khác'
+            ? $request->other_reason
+            : $request->CancellationReason;
+
+        $booking->BookingStatus = 'Đã hủy';
+        $booking->CancellationReason = $reason;
+        $booking->save();
+
+        if ($booking->RoomID) {
+            $room = Room::find($booking->RoomID);
+            if ($room) {
+                $room->Status = 'Available';
+                $room->save();
+            }
+        }
+        return redirect()
+            ->route('User.orders.appointment')->with('success', 'Đặt phòng đã được hủy. Lý do: ' . $reason);
     }
 }

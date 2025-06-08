@@ -8,7 +8,7 @@
             <div class="user-info">
                 @if (Auth::guard('customer')->check())
                 <div class="dropdown">
-                    <a href="#" class="dropdown-toggle text-white" data-bs-toggle="dropdown">
+                    <a href="#" class="dropdown-toggle text-white text-decoration-none" data-bs-toggle="dropdown">
                         <i class="fas fa-user"></i> {{ Auth::guard('customer')->user()->name }}
                     </a>
                     <div class="dropdown-menu">
@@ -58,7 +58,7 @@
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">🐶 CHÓ CẢNH</a>
                         <div class="dropdown-menu">
                             @foreach($dogCategories as $dog)
-                            <a class="dropdown-item" href="{{ route('User.category', ['category_id' => $dog->category_id]) }}">{{ $dog->category_name }}</a>
+                            <a class="dropdown-item" href="{{ route('User.category', ['category_id' => $dog->category_id, 'category_name' => urlencode($dog->category_name)]) }}">{{ $dog->category_name }}</a>
                             @endforeach
                             <a class="dropdown-item border-top text-center fw-bold" href="{{ route('User.product', ['type' => 'dogs']) }}">Tất cả chó cảnh</a>
                         </div>
@@ -69,7 +69,7 @@
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">🐱 MÈO CẢNH</a>
                         <div class="dropdown-menu">
                             @foreach($catCategories as $cat)
-                            <a class="dropdown-item" href="{{ route('User.category', ['category_id' => $cat->category_id]) }}">{{ $cat->category_name }}</a>
+                            <a class="dropdown-item" href="{{ route('User.category', ['category_id' => $cat->category_id, 'category_name' => urlencode($cat->category_name)]) }}">{{ $cat->category_name }}</a>
                             @endforeach
                             <a class="dropdown-item border-top text-center fw-bold" href="{{ route('User.product', ['type' => 'cats']) }}">Tất cả mèo cảnh</a>
                         </div>
@@ -80,7 +80,7 @@
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">🎁 PHỤ KIỆN</a>
                         <div class="dropdown-menu">
                             @foreach($accessoryCategories as $accessory)
-                            <a class="dropdown-item" href="{{ route('User.category', ['category_id' => $accessory->category_id]) }}">{{ $accessory->category_name }}</a>
+                            <a class="dropdown-item" href="{{ route('User.category', ['category_id' => $accessory->category_id, 'category_name' => urlencode($accessory->category_name)]) }}">{{ $accessory->category_name }}</a>
                             @endforeach
                             <a class="dropdown-item border-top text-center fw-bold" href="{{ route('User.product', ['type' => 'accessories']) }}">Tất cả phụ kiện</a>
                         </div>
@@ -94,8 +94,19 @@
                         <button type="submit" class="btn"><i class="fas fa-search"></i></button>
                     </form>
                 </div>
+                @php
+                use Illuminate\Support\Facades\Auth;
 
-                <!-- Biểu tượng liên hệ & giỏ hàng -->
+                // Mặc định cart rỗng
+                $cart = [];
+
+                // Nếu khách hàng đã đăng nhập, lấy giỏ hàng theo ID người dùng
+                if (Auth::guard('customer')->check()) {
+                $userId = Auth::guard('customer')->id();
+                $cart = session('cart_' . $userId, []);
+                }
+                @endphp
+
                 <div class="header-icons d-flex align-items-center">
                     <a href="tel:+84964505836" class="phone">
                         <i class="fas fa-phone"></i> 0964 505 836
@@ -122,7 +133,6 @@
                             @endif
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

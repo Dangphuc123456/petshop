@@ -1,35 +1,48 @@
-@extends('Admin.admin')
-@section('title', 'Detail suppliers')
-@section('main')
-<div class="container my-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h2 class="text-center mb-0">Detail Pet Information {{$supplier_id }}</h2>
-        </div>
-        <div class="card-body">
-            <form action="#" method="#">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name :<span> {{ $suppliers->name }}</span></label>
-                </div>
-
-                <div class="mb-3">
-                    <label for="contact_person" class="form-label">Contact_person :<span>{{ $suppliers->contact_person }}</span></label>
-                </div>
-
-                <div class="mb-3">
-                    <label for="address" class="form-label">Address :<span> {{ $suppliers->address }}</span></label>
-                </div>
-
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Phone :<span>{{ $suppliers->phone }}</span></label>
-                </div>
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">email :<span>{{ $suppliers->email }}</span></label>
-                </div>
-                <a href="{{ route('admin.suppliers.index') }}" class="btn btn-secondary">Back to suppliers</a>
-            </form>
-        </div>
-    </div>
+<div class="modal-header bg-primary text-white">
+  <h5 class="modal-title">📋 Chi tiết nhà cung cấp</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
-@endsection
+
+<div class="modal-body">
+  <div class="card border-0 shadow-sm p-4 bg-light rounded">
+    <h5 class="mb-4 fw-bold text-primary">Thông tin nhà cung cấp</h5>
+
+    <div class="mb-3 row">
+      <label class="col-sm-3 fw-bold text-dark">Tên nhà cung cấp:</label>
+      <div class="col-sm-9">
+        <span class="text-muted">{{ $supplier->name }}</span>
+      </div>
+    </div>
+
+    <div class="mb-3 row">
+      <label class="col-sm-3 fw-bold text-dark">Người liên hệ:</label>
+      <div class="col-sm-9">
+        <span class="text-muted">{{ $supplier->contact_person }}</span>
+      </div>
+    </div>
+
+    <div class="mb-3 row">
+      <label class="col-sm-3 fw-bold text-dark">Địa chỉ:</label>
+      <div class="col-sm-9">
+        <span class="text-muted">{{ $supplier->address }}</span>
+      </div>
+    </div>
+
+    <div class="mb-3 row">
+      <label class="col-sm-3 fw-bold text-dark">Số điện thoại:</label>
+      <div class="col-sm-9">
+        <span class="text-muted">{{ $supplier->phone }}</span>
+      </div>
+    </div>
+
+    <div class="mb-3 row">
+      <label class="col-sm-3 fw-bold text-dark">Email:</label>
+      <div class="col-sm-9">
+        <span class="text-muted">{{ $supplier->email }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+</div>
